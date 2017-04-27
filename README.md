@@ -8,8 +8,8 @@ Simple and fast UDP Networking for Unity
   * Small CPU and RAM usage
   * Small packet size overhead
   * Custom encapsulation of messages into byte array
-  * Receive very low latency Async Messages
-  * Push Async Messages to Main Thread very fast
+  * Receive very low latency Async Messages  ( < 1ms)
+  * Push Async Messages to Main Thread very fast ( ~ 2.5ms)
   
 * Added functionality to UDP
   * Reliable messages (Not Ordered)
@@ -32,7 +32,7 @@ public class Server : SUNet {
     void Start () {
         //Starts a connection on the local machine listening at 'port'
         StartConnection(port);
-	  }
+    }
 
     //--------------------------------------------------------------------
     //Receive Async Messages, push to main thread from here
@@ -80,7 +80,7 @@ public class Client : SUNet {
         ServerConnection = new IPEndPoint(IPAddress.Parse(serverIP), serverport);
         
         InvokeRepeating("Pinger", 2, 0.1f);
-	  }
+    }
 
     //--------------------------------------------------------------------
     void Pinger() {
