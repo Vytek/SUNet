@@ -28,13 +28,13 @@ public class Server : SUNet {
 
     public int port = 8000;
 
-    //--------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------
     void Start () {
         //Starts a connection on the local machine listening at 'port'
         StartConnection(port);
     }
 
-    //--------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------
     //Receive Async Messages, push to main thread from here
     protected override void OnMessageReceivedAsync(IPEndPoint fromUser, NetMessage data, bool reliable) {
         if (reliable)
@@ -46,7 +46,7 @@ public class Server : SUNet {
         //PushToMainThread(fromUser, data);
     }
 
-    //--------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------
     protected override void OnMessageReceivedSync(IPEndPoint fromUser, NetMessage data) {
         //Is is in main Thread
     }
@@ -71,7 +71,7 @@ public class Client : SUNet {
     private double SPingTotal = 0;
     private long SPingCount = 0;
 
-    //--------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------
     void Start () {
         //Start a connection on a system asigned port
         StartConnection();
@@ -82,14 +82,14 @@ public class Client : SUNet {
         InvokeRepeating("Pinger", 2, 0.1f);
     }
 
-    //--------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------
     void Pinger() {
         NetMessage nm = new NetMessage();
         nm.Push(DateTime.UtcNow);
         SendReliableMessageTo(ServerConnection, nm);
-	  }
+    }
 
-    //--------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------
     protected override void OnMessageReceivedAsync(IPEndPoint fromUser, NetMessage data, bool reliable) {
         if (GetAsync) {
             double totMs = DateTime.UtcNow.Subtract(data.PopDatetime()).TotalMilliseconds;
@@ -102,7 +102,7 @@ public class Client : SUNet {
         GetAsync = !GetAsync; // Keep changing between Async messages and Main Thread
     }
 
-    //--------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------
     protected override void OnMessageReceivedSync(IPEndPoint fromUser, NetMessage data) {
         double totMs = DateTime.UtcNow.Subtract(data.PopDatetime()).TotalMilliseconds;
         SPingTotal += totMs;
@@ -110,7 +110,7 @@ public class Client : SUNet {
         SPing = (float)(SPingTotal/SPingCount) +"  -  "+ (float)totMs;
     }
 
-    //--------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------
     private void OnGUI() {
         GUI.Label(new Rect(10, 10, 256, 24), APing);
         GUI.Label(new Rect(10, 40, 256, 24), SPing);
